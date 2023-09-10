@@ -8,6 +8,11 @@
       margin: 20px;
     }
 
+    .creator{
+      text-align: center;
+      margin-top: -10px;
+    }
+
     .book-title-container, .amount-container, .description-container{
       display: flex;
       margin: 0px 50px 0px 50px;
@@ -22,19 +27,20 @@
 </head>
 
 <body>
-  <h1 class="web-title">Book Catalog</h1>
+  <h1 class="web-title">{{application}}</h1>
+  <h3 class="creator">{{name}} - {{class}}</h3>
   <div class="book-container">
     <div class="book-title-container">
       <p class="book-name-title">Name: </p>
-        <p class="content">{{name}}</p>
+        <p class="content">Hujan</p>
     </div>
     <div class="amount-container">
       <p class="amount-title">Amount: </p>
-        <p class="content">{{amount}}</p>
+        <p class="content">10</p>
     </div>
     <div class="description-container">
       <p class="description-title">Description: </p>
-        <p class="content">{{description}}</p>
+        <p class="content">Novel Hujan merupakan novel yang mengisahkan kisah cinta serta perjuangan hidup Lail.</p>
     </div>
   </div>
 </body>
