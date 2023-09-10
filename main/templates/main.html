@@ -1,8 +1,40 @@
-<h1>Shopping List Page</h1>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="../static/css/main.css">
+  <style>
+    .web-title{
+      text-align: center;
+      margin: 20px;
+    }
 
-<h5>Name: </h5>
-<p>{{name}}</p>
-<h5>Amount: </h5>
-<p>{{amount}}</p>
-<h5>Description: </h5>
-<p>{{description}}</p>
+    .book-title-container, .amount-container, .description-container{
+      display: flex;
+      margin: 0px 50px 0px 50px;
+      font-family: "Sans-serif", "Helvetica";
+      font-size: 15px;
+    }
+
+    .content{
+      margin-left: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="web-title">Book Catalog</h1>
+  <div class="book-container">
+    <div class="book-title-container">
+      <p class="book-name-title">Name: </p>
+        <p class="content">{{name}}</p>
+    </div>
+    <div class="amount-container">
+      <p class="amount-title">Amount: </p>
+        <p class="content">{{amount}}</p>
+    </div>
+    <div class="description-container">
+      <p class="description-title">Description: </p>
+        <p class="content">{{description}}</p>
+    </div>
+  </div>
+</body>
