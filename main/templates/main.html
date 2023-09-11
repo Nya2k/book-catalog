@@ -1,46 +1,33 @@
+{% load static %}
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
-  <link rel="stylesheet" href="../static/css/main.css">
-  <style>
-    .web-title{
-      text-align: center;
-      margin: 20px;
-    }
-
-    .creator{
-      text-align: center;
-      margin-top: -10px;
-    }
-
-    .book-title-container, .amount-container, .description-container{
-      display: flex;
-      margin: 0px 50px 0px 50px;
-      font-family: "Sans-serif", "Helvetica";
-      font-size: 15px;
-    }
-
-    .content{
-      margin-left: 5px;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-  <h1 class="web-title">{{application}}</h1>
-  <h3 class="creator">{{name}} - {{class}}</h3>
-  <div class="book-container">
-    <div class="book-title-container">
-      <p class="book-name-title">Name: </p>
-        <p class="content">Hujan</p>
+  <div class="flex m-3 mx-20 text-xl font-bold">
+    <h1 class="w-auto text-stone-700">{{application}}</h1>
+  </div>
+  <div class="relative text-white font-extrabold">
+    <p class="absolute  text-6xl z-10 m-20 line-clamp-2 w-[700px] h-[400px] drop-shadow-md">EXPLORE THE WORLD by reading books</p>
+    <p class="absolute z-10 right-5 bottom-2 font-semibold text-xl ">Eudora Vanya Lindsay - PBP-D</p>
+    <img src="{% static '../static/images/book-background.jpg' %}" alt="book-background" 
+      class="object-cover h-[300px] w-full opacity-90">
+  </div>
+  <div class="my-5">
+    <div class="mx-20 px-3 pt-3 flex">
+      <p>Name :</p>
+      <p class="ml-2">{{name}}</p>
     </div>
-    <div class="amount-container">
-      <p class="amount-title">Amount: </p>
-        <p class="content">10</p>
+    <div class="mx-20 px-3 flex">
+      <p>Amount :</p>
+      <p class="ml-2">{{amount}}</p>
     </div>
-    <div class="description-container">
-      <p class="description-title">Description: </p>
-        <p class="content">Novel Hujan merupakan novel yang mengisahkan kisah cinta serta perjuangan hidup Lail.</p>
+    <div class="mx-20 px-3 pb-3 flex">
+      <p>Description :</p>
+      <p class="ml-2">{{description}}</p>
     </div>
   </div>
 </body>
