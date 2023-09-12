@@ -272,8 +272,8 @@ URL routing needed so the `main` application can be accessed via web browser.
 1. Create new directory named `templates` in `main` application directory
 2. In the `templates` directory, create new file named `main.html` then fill with following code:
     ```
-    <h1>{{application}}</h1>
-    <h3>{{name}} - {{class}}</h3>
+    <h1>{{application_name}}</h1>
+    <p>{{name}} - {{class}}</p>
     ```
     Template is how will the data shown on the browser. Template can be edited and supported with other *styling Frameworks*.
     
@@ -364,7 +364,7 @@ I also added a new testing in the class to check if the object exist in the data
 <summary>Current Notes</summary>
 <br>
 
-I edited the templates and added Tailwind script to do the styling of HTML page. :D
+View and template on tutorial above were made based on the task requirements, I added other contexts and elements afterwards. I also edited the templates and added Tailwind script to do the styling of HTML page. :D
 </details>
 
 ---
