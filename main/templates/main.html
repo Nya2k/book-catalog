@@ -8,26 +8,26 @@
 
 <body>
   <div class="flex m-3 mx-20 text-xl font-bold">
-    <h1 class="w-auto text-stone-700">{{application}}</h1>
+    <h1 class="w-auto text-stone-700">{{application_name}}</h1>
   </div>
   <div class="relative text-white font-extrabold">
     <p class="absolute  text-6xl z-10 m-20 line-clamp-2 w-[700px] h-[400px] drop-shadow-md">EXPLORE THE WORLD by reading books</p>
-    <p class="absolute z-10 right-5 bottom-2 font-semibold text-xl ">Eudora Vanya Lindsay - PBP-D</p>
+    <p class="absolute z-10 right-5 bottom-2 font-semibold text-xl ">{{name}} - {{class}}</p>
     <img src="{% static '../static/images/book-background.jpg' %}" alt="book-background" 
       class="object-cover h-[300px] w-full opacity-90">
   </div>
   <div class="my-5">
     <div class="mx-20 px-3 pt-3 flex">
       <p>Name :</p>
-      <p class="ml-2">{{name}}</p>
+      <p class="ml-2">{{book_name}}</p>
     </div>
     <div class="mx-20 px-3 flex">
       <p>Amount :</p>
-      <p class="ml-2">{{amount}}</p>
+      <p class="ml-2">{{book_amount}}</p>
     </div>
     <div class="mx-20 px-3 pb-3 flex">
       <p>Description :</p>
-      <p class="ml-2">{{description}}</p>
+      <p class="ml-2">{{book_description}}</p>
     </div>
   </div>
 </body>
