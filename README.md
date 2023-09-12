@@ -371,10 +371,10 @@ I edited the templates and added Tailwind script to do the styling of HTML page.
 
 ### Django diagram about client request to the application web and the response.
 
+<img src="MVT-Django-Architecture.png" alt="MVT Django Architecture Diagram">
+
 <details>
 <summary>Diagram explanation</summary>
-
-![Django Architecture Diagram]("MVT-Django-Architecture.png")
 
 #### Django uses MVT (Model-View-Template) Architecture
 **Model (models.py)**  : Model manages data logic, interacts with database, and define the application's data structure of database
