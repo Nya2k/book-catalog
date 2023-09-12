@@ -423,6 +423,8 @@ Model manage the data logic then notifies changes to ViewModel by binding/events
 <br>
 
 **MVC** : Controller is the entry point to the application and will control request flow and communication between Model and View.
+
 **MVT** : Component that works like an 'controller' is abstracted and handled by the framework. It will control the request flow, connect Model with View, routing request to View, and handling HTTP request/response from/to user.
+
 **MVVM** : ViewModel is the entry point to the application managing application's behavior and data to be presented.    
 </details>
