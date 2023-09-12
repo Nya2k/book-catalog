@@ -270,12 +270,12 @@ URL routing needed so the `main` application can be accessed via web browser.
     
 #### Implement *Template*
 1. Create new directory named `templates` in `main` application directory
-2. In the `templates` directory, create new file named `main.html` then fill with following code:
+2. In the `templates` directory, create new file named `main.html` then write this following code:
     ```
     <h1>{{application_name}}</h1>
     <p>{{name}} - {{class}}</p>
     ```
-    Template is how will the data shown on the browser. Template can be edited and supported with other *styling Frameworks*.
+    Template is how will the data shown on the browser. Template can be edited and supported with other styling Frameworks.
     
 #### Connect `View` with `Template`
 1. Open `views.py` inside main directory
@@ -299,7 +299,7 @@ then add the following code:
 <summary>Configure project URL routing</summary>
 <br>
 
-1. Import `include` function from `django.urls` on `urls.py` and add URL route to redirect to `main` display inside `book_catalog` project directory, like following:
+1. Inside `book_catalog` directory, open `urls.py` then import `include` function to import URL route from `main` application, like following:
     ```
     ...
     from django.urls import path, include
@@ -310,7 +310,7 @@ then add the following code:
         ...
     ]
     ```
-    `include` import URL route from `main` application then `main/` will redirect to route that's defined on `urls.py` inside it.
+    `main/` will redirect to route that's defined on `urls.py` inside `main` directory.
 </details>
     
 <details>
@@ -322,16 +322,16 @@ then add the following code:
     ```
     python manage.py runserver
     ```
-    Then open `http://localhost:8000/` on browser to see the project result.
+    Then open `http://localhost:8000/main` on browser to see the project result.
 
 #### Deploy project to Adaptable    
-1. Sign in to Adaptable then open the Dashboard
-2. Create `new App` then choose `Connect an Existing Repository`
-3. Choose `book_catalog` repository and `main` branch to deploy
-4. Choose `Python App Template` then `PostgreSQL`
-5. Change the Python version (mine is 3.11) and fill the `Start Command` with the following command `python manage.py migrate && gunicorn book_catalog.wsgi`
-6. Type the application name to be the web domain (mine is `book-catalog`)
-7. Tick the `HTTP Listener on PORT` then deploy
+1. Sign in to Adaptable then open the Dashboard.
+2. Create `new App` then choose `Connect an Existing Repository`.
+3. Choose `book_catalog` repository and `main` branch to deploy.
+4. Choose `Python App Template` then `PostgreSQL`.
+5. Change the Python version (mine is 3.11) and fill the `Start Command` with the following command `python manage.py migrate && gunicorn book_catalog.wsgi`.
+6. Type the application name to be the web domain (mine is `book-catalog`).
+7. Tick the `HTTP Listener on PORT` then deploy.
 </details>
 
 <details>
@@ -351,7 +351,7 @@ To check some of the functionality, testing is added on `tests.py` inside `main`
         def test_main_using_main_template(self):
             response = Client().get('/main/')
             self.assertTemplateUsed(response, 'main.html')
-I also added a new testing in the class to check if the object exist in the database defined by the model.
+I also added a new testing in the class to check if the object exist in the database.
   ```
  def test_object_exist(self):
         name_object = Item.objects.create(name='Buku 1', amount=10, description='Ini buku 1')
@@ -377,15 +377,15 @@ View and template on tutorial above were made based on the task requirements, I 
 <summary>Diagram explanation</summary>
 
 #### Django uses MVT (Model-View-Template) Architecture
-**Model (models.py)**  : Model manages data logic, interacts with database, and define the application's data structure of database
+**Model (models.py)**  : Model manages data logic, interacts with database, and defines the application's data structure of database.
 
 **View (views.py)** : View process user request by interacting with Model to retrieve, update, and manipulate data. View also interact with Template to render the view.
 
 **Template** : Template defines the structure and layout of the UI and generate it to be presented to the user by rendering view as an HTML file as the return of the user request.
 
-**`urls.py`** : `urls.py` defines the URL pattern for the web application and map to application view
+**`urls.py`** : `urls.py` defines the URL pattern for the web application and map to application view.
 
-**HTML file** : HTML defines the UI structure, layout, and presentation of content on web pages rendered by web browser/client and display content to users.
+**HTML file** : HTML defines the UI structure, layout, and presentation of content on web pages rendered by web browser/client and displays content to users.
 </details>
 
 ---
