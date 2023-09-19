@@ -1,33 +1,36 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
+{% block content %}
 <body>
   <div class="flex m-3 mx-20 text-xl font-bold">
     <h1 class="w-auto text-stone-700">{{application_name}}</h1>
   </div>
   <div class="relative text-white font-extrabold">
-    <p class="absolute  text-6xl z-10 m-20 line-clamp-2 w-[700px] h-[400px] drop-shadow-md">EXPLORE THE WORLD by reading books</p>
-    <p class="absolute z-10 right-5 bottom-2 font-semibold text-xl ">{{name}} - {{class}}</p>
+    <div>
+      <p class="absolute  text-6xl z-10 m-20 line-clamp-2 w-[700px] h-[130px] drop-shadow-md">EXPLORE THE WORLD by reading books</p>
+      <p class="absolute z-10 right-5 bottom-2 font-semibold text-xl ">{{name}} - {{class}}</p>
+    </div>
     <img src="{% static '../static/images/book-background.jpg' %}" alt="book-background" 
       class="object-cover h-[300px] w-full opacity-90">
   </div>
+
   <div class="my-5">
-    <div class="mx-20 px-3 pt-3 flex">
-      <p>Name :</p>
-      <p class="ml-2">{{book_name}}</p>
-    </div>
-    <div class="mx-20 px-3 flex">
-      <p>Amount :</p>
-      <p class="ml-2">{{book_amount}}</p>
-    </div>
-    <div class="mx-20 px-3 pb-3 flex">
-      <p>Description :</p>
-      <p class="ml-2">{{book_description}}</p>
-    </div>
+    <div class="mx-20 pt-3 flex">
+      <p>Terdapat {{items.count}} jenis buku dalam katalog</p>
   </div>
+  
+  <a href="{% url 'main:add_item' %}" class="ml-20">
+    <button class="bg-neutral-700 text-white mt-7 px-3 py-1 rounded">
+      Add New Item
+    </button>
+  </a>
+
+  <a href="{% url 'main:show_html' %}">
+    <button class=" bg-neutral-700 text-white mt-7 px-3 py-1 rounded">
+      Show Catalog
+    </button>
+  </a>
+  
 </body>
+{% endblock content %}

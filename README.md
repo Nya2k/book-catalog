@@ -5,7 +5,7 @@ https://book-catalog.adaptable.app
 
 ## How I implement the checklists step by step
 <details>
-<summary> Make a new Django project.</summary>
+<summary> (2) Make a new Django project.</summary>
 <br>
     
 1. Make local directory named `book_catalog` then open terminal on that directory path.
@@ -207,7 +207,7 @@ https://book-catalog.adaptable.app
 </details>
     
 <details>
-<summary>Create project application and configure the URL routing</summary>
+<summary>(2) Create project application and configure the URL routing</summary>
 <br>
     
 #### Create project application named `'main'`
@@ -243,7 +243,7 @@ URL routing needed so the `main` application can be accessed via web browser.
 </details>
 
 <details>
-<summary>Implement Model, Template, and connect it with View</summary>
+<summary>(2) Implement Model, Template, and connect it with View</summary>
 <br>
     
 #### Implement Model    
@@ -296,7 +296,7 @@ then add the following code:
 </details>
 
 <details>
-<summary>Configure project URL routing</summary>
+<summary>(2) Configure project URL routing</summary>
 <br>
 
 1. Inside `book_catalog` directory, open `urls.py` then import `include` function to import URL route from `main` application, like following:
@@ -314,7 +314,7 @@ then add the following code:
 </details>
     
 <details>
-<summary>Open project and deploy to Adaptable</summary>
+<summary>(2) Open project and deploy to Adaptable</summary>
 <br>
     
 #### Open the Django project on browser
@@ -335,7 +335,7 @@ then add the following code:
 </details>
 
 <details>
-<summary>Add testing</summary>
+<summary>(2) Add testing</summary>
 <br>
 
 To check some of the functionality, testing is added on `tests.py` inside `main` directory.
@@ -361,17 +361,207 @@ I also added a new testing in the class to check if the object exist in the data
 </details>
 
 <details>
+<summary>(3) Skeleton as View's Structure</summary>
+Skeleton is needed to make sure our code on displaying data is consistent.
+
+1. Create a file named `base.html` inside `templates` folder in the root directory and move some of the code in `main.html` there.
+
+    ```
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0"
+            />
+            <script src="https://cdn.tailwindcss.com"></script>
+            {% block meta %}
+            {% endblock meta %}
+        </head>
+
+        <body>
+            {% block content %}
+            {% endblock content %}
+        </body>
+    </html>
+    ```
+    
+2. Add `'DIRS': [BASE_DIR / 'templates'],` in `settings.py` inside `book_catalog` directory
+</details>
+
+<details>
+<summary>(3) Data input form and display data in HTML</summary>
+
+1. Create `forms.py` inside `main` directory
+    ```
+    from django.forms import ModelForm
+    from main.models import Item
+    class ItemForm(ModelForm):
+        class Meta:
+            model = Item
+            fields = ["name", "amount", "description"]
+    ```
+
+2. Add imports in `views.py` inside `main` directory.
+    ```
+    from django.http import HttpResponseRedirect
+    from main.forms import ItemForm
+    from django.urls import reverse
+    from main.models import Item
+    ```
+3. Then add this following function to validate input, save to app's database, redirect page to `main` page, and add a new item when the form is submitted.
+    ```
+    def add_item(request):
+    form = ItemForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "add_item.html", context)
+
+    ```
+4. Then add `items = Item.objects.all()` on top of `show_main` function to fetch all `item` object inside database.
+5. Import `add_item` from `main.views` in `urls.py`.
+6. Add url patterns `path('add-item', add_item, name='add_item')` 
+7. Create `add_item.html` in `templates` directory inside `main` folder.
+    ```
+    {% extends 'base.html' %} 
+
+    {% block content %}
+    <h1>Add New Item</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Add Item"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% endblock %}
+    ```
+</details>
+
+<details>
+<summary>(3) Returning data as HTML</summary>
+
+1. Create `show_html.html` inside `templates` directory in `main` folder as the template to display data saved in database.
+    ```
+    {% extends 'base.html' %} 
+
+    {% block content %}
+    <table class="mx-20">
+    <tr>
+        <th>Name</th>
+        <th>Amount</th>
+        <th>Description</th>
+    </tr>
+    
+    {% for item in items %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.amount}}</td>
+            <td>{{item.description}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% endblock %}
+    ```
+2. Make a new function inside `views.py` inside `main` directory
+    ```
+    def show_html(request):
+        items = Item.objects.all()
+        return render(request, 'show_html.html', {"items": items})
+    ```
+3. Add new url pattern inside `urls.py` in `main` directory
+    ```
+    path('add-item/', add_item, name='add_item')
+    ```
+</details>
+
+<details>
+<summary>(3) Returning data as XML and JSON</summary>
+
+1. Add import in `views.py` inside `main` directory
+    ```
+    from django.http import HttpResponse
+    from django.core import serializers
+    ```
+2. Inside the same file, make new functions
+- XML
+    ```
+    def show_xml(request):
+        data = Item.objects.all()
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    ```
+- XML by ID
+    ```
+    def show_xml_by_id(request, id):
+        data = Item.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    ```
+- JSON
+    ```
+    def show_json(request):
+        data = Item.objects.all()
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+- JSON by ID
+    ```
+    def show_json_by_id(request, id):
+        data = Item.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+3. Add the name of the function as an import inside `urls.py` in `main` directory
+    ```
+    from main.views import show_html, show_xml, show_json, show_xml_by_id, show_json_by_id
+    ```
+4. Then make new url patterns
+    ```
+    path('html/', show_html, name='show_html'),
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'),
+    path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<int:id>/', show_json_by_id, name='show_json_by_id'), 
+    ```
+</details>
+
+<details>
+<summary>(3) Add a message</summary>
+
+1. Add this following code to show the message and amount of items in application
+    ```
+    <div class="my-5">
+    <div class="mx-20 pt-3 flex">
+        <p>Terdapat {{items.count}} jenis buku dalam katalog</p>
+    </div>
+    ```
+    `items.count` show the amount of object saved in database.
+</details>
+
+<details>
 <summary>Current Notes</summary>
 <br>
 
 View and template on tutorial above were made based on the task requirements, I added other contexts and elements afterwards. I also edited the templates and added Tailwind script to do the styling of HTML page. :D
+    
+note : (n) for assigment n
 </details>
 
 ---
 
 ### Django diagram about client request to the application web and the response.
 
-<img src="MVT-Django-Architecture.png" alt="MVT Django Architecture Diagram">
+<img src="md_images/MVT Django Architecture.png" alt="MVT Django Architecture Diagram">
 
 <details>
 <summary>Diagram explanation</summary>
@@ -427,4 +617,80 @@ Model manage the data logic then notifies changes to ViewModel by binding/events
 **MVT** : Component that works like an 'controller' is abstracted and handled by the framework. It will control the request flow, connect Model with View, routing request to View, and handling HTTP request/response from/to user.
 
 **MVVM** : ViewModel is the entry point to the application managing application's behavior and data to be presented.    
+</details>
+
+---
+
+### What is the difference between POST form and GET form in Django?
+<details>
+<summary>POST form</summary>
+
+POST form is a HTTP method of Django form to do any request that change the state of the system like adding item to the database. Post method offers more control over access for example CSRF protection used on `add_item.html` to prevent malicious attacks.
+</details>
+
+<details>
+<summary>GET form</summary>
+
+GET form is a HTTP method of Django form to bundle submitted data into string and use them to compose URL. In this project, get method used to take the data saved on database and pass them to be displayed to user.
+</details>
+
+---
+
+### What are the main differences between XML, JSON, and HTML in the context of data delivery?
+<details>
+<summary>XML</summary>
+    
+XML : more flexible and secure but much more difficult to parse than JSON and is more complex. XML data structure use nested elements, for example:
+    ```
+    <person>
+        <name>Vanya</name>
+    </person>
+    ```
+</details>
+
+<details>
+<summary>JSON</summary>
+
+JSON : easier, faster, parsed into a ready-to-use JS object, smaller file size, but limited data type and no metadata. JSON data structure use key-value pair, for example:
+    
+```{"name" : "Vanya"}```
+</details>
+
+<details>
+<summary>HTML</summary>
+
+HTML : content is structured, easier to render, support media like images and videos, but HTML used to render web content so it may not be relevant for transferring pure data and more complex to render because of the structure. HTML uses HTML tags to display data such as
+    
+```<p>Vanya</p>```
+</details>
+
+---
+
+### Why is JSON often used in data exchange between modern web applications?
+JSON is designed with simple key-value pair structure making it has a more readable format data structure and easier to understand. In modern web application, efficiency is needed to improve performance and speed of displaying data. JSON provides it with built-in support or libraries for parsing JSON data making it easier on transfering data with minimum data size. Through its feature and wide range of technologies, JSON is needed and used on modern web application.
+
+### Access the five URLs in point 2 using Postman, take screenshots of the results in Postman, and add them to README.md.
+<details>
+<summary>HTML</summary>
+<img src="md_images/HTML Postman.png" alt="HTML Postman">
+</details>
+
+<details>
+<summary>XML</summary>
+<img src="md_images/XML Postman.png" alt="XML Postman">
+</details>
+
+<details>
+<summary>XML by ID</summary>
+<img src="md_images/XML by id Postman.png" alt="XML by ID Postman">
+</details>
+
+<details>
+<summary>JSON</summary>
+<img src="md_images/JSON Postman.png" alt="JSON Postman">
+</details>
+
+<details>
+<summary>JSON by ID</summary>
+<img src="md_images/JSON by id Postman.png" alt="JSON by ID Postman">
 </details>

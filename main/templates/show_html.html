@@ -1,0 +1,33 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+<h1 class="w-auto text-stone-700 flex m-3 mx-20 text-3xl font-bold">BOOK CATALOG</h1>
+
+<table class="mx-20 mt-5 table-auto border-separate border border-neutral-800">
+  <tr>
+      <th class="border-separate border border-neutral-800 w-1/4">NAME</th>
+      <th class="border-separate border border-neutral-800 w-1/12">AMOUNT</th>
+      <th class="border-separate border border-neutral-800 w-1/2">DESCRIPTION</th>
+  </tr>
+  
+  {% for item in items %}
+      <tr>
+          <td class="border-separate border border-neutral-800 px-2 py-1">{{item.name}}</td>
+          <td class="border-separate border border-neutral-800 text-center py-1">{{item.amount}}</td>
+          <td class="border-separate border border-neutral-800 px-2 py-1">{{item.description}}</td>
+      </tr>
+  {% endfor %}
+</table>
+
+    <a href="{% url 'main:show_main' %}" class="ml-20">
+        <button class=" bg-neutral-700 text-white mt-7 px-3 py-1 rounded">
+        Back to Main
+        </button>
+    </a>
+
+    <a href="{% url 'main:add_item' %}">
+        <button class="bg-neutral-700 text-white mt-7 px-3 py-1 rounded">
+        Add New Item
+        </button>
+    </a>
+{% endblock %}
