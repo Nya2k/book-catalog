@@ -672,7 +672,8 @@ JSON is designed with simple key-value pair structure making it has a more reada
 ### Access the five URLs in point 2 using Postman, take screenshots of the results in Postman, and add them to README.md.
 <details>
 <summary>HTML</summary>
-<img src="md_images/HTML Postman.png" alt="HTML Postman">
+<img src="md_images/HTML1 Postman.png" alt="HTML1 Postman">
+<img src="md_images/HTML2 Postman.png" alt="HTML2 Postman">
 </details>
 
 <details>
