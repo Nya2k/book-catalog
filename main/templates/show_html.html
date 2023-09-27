@@ -5,19 +5,38 @@
 
 <table class="mx-20 mt-5 table-auto border-separate border border-neutral-800">
   <tr>
-      <th class="border-separate border border-neutral-800 w-1/4">NAME</th>
-      <th class="border-separate border border-neutral-800 w-1/12">AMOUNT</th>
-      <th class="border-separate border border-neutral-800 w-1/2">DESCRIPTION</th>
+		<th class="border-separate border border-neutral-800 w-1/4">NAME</th>
+		<th class="border-separate border border-neutral-800 w-1/12">AMOUNT</th>
+		<th class="border-separate border border-neutral-800 w-1/2">DESCRIPTION</th>
+		<th class="w-1/12"></th>
   </tr>
   
   {% for item in items %}
-      <tr>
-          <td class="border-separate border border-neutral-800 px-2 py-1">{{item.name}}</td>
-          <td class="border-separate border border-neutral-800 text-center py-1">{{item.amount}}</td>
-          <td class="border-separate border border-neutral-800 px-2 py-1">{{item.description}}</td>
-      </tr>
+  <tr>
+		<td class="border-separate border border-neutral-800 px-2 py-1">{{item.name}}</td>
+		<td class="border-separate border border-neutral-800 text-center py-1">{{item.amount}}</td>
+		<td class="border-separate border border-neutral-800 px-2 py-1">{{item.description}}</td>
+		<td class="border-separate border border-neutral-800 px-1 py-1 flex items-center justify-center">
+			<a href="{% url 'main:add_amount' item.id item.amount %}" class="mx-1">
+					<button class=" bg-neutral-700 text-white w-7 rounded flex items-center justify-center">
+						+
+					</button>
+			</a>
+			<a href="{% url 'main:subtract_amount' item.id item.amount %}" class="mx-1">
+				<button class=" bg-neutral-700 text-white w-7 rounded flex items-center justify-center">
+				-
+				</button>
+			</a>
+			<a href="{% url 'main:delete_item' item.id %}" class="mx-1">
+				<button class=" bg-neutral-700 text-white w-16 rounded flex items-center justify-center">
+					delete
+				</button>
+			</a>
+		</td>
+  </tr>
   {% endfor %}
 </table>
+
 
     <a href="{% url 'main:show_main' %}" class="ml-20">
         <button class=" bg-neutral-700 text-white mt-7 px-3 py-1 rounded">

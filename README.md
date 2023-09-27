@@ -549,6 +549,219 @@ Skeleton is needed to make sure our code on displaying data is consistent.
 </details>
 
 <details>
+<summary>(4) Registration, Login, and Logout</summary>
+
+1. Activate virtual environment then add imports of redirect, UserCreationForm, messages, authenticate, login, and logout to make functions for register, login, logout, and login_required in views.py inside main directory 
+2. Create function 
+    `register` function to create user account when data is submitted
+    ```
+    def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form':form}
+    return render(request, 'register.html', context)
+    ```
+
+    `login_user` function to authenticate user by data
+    ```
+    def login_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('main:show_main')
+        else:
+            messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+    context = {}
+    return render(request, 'login.html', context)
+    ```
+
+    `logout_user` function to log out user
+    ```
+    def logout_user(request):
+    logout(request)
+    return redirect('main:login')
+    ```
+3. Create `register.html` inside main/templates to create register form
+    ```
+    {% extends 'base.html' %}
+
+    {% block meta %}
+        <title>Register</title>
+    {% endblock meta %}
+
+    {% block content %}  
+
+    <div class = "login">
+        
+        <h1>Register</h1>  
+
+            <form method="POST" >  
+                {% csrf_token %}  
+                <table>  
+                    {{ form.as_table }}  
+                    <tr>  
+                        <td></td>
+                        <td><input type="submit" name="submit" value="Daftar"/></td>  
+                    </tr>  
+                </table>  
+            </form>
+
+        {% if messages %}  
+            <ul>   
+                {% for message in messages %}  
+                    <li>{{ message }}</li>  
+                    {% endfor %}  
+            </ul>   
+        {% endif %}
+
+    </div>  
+
+    {% endblock content %}
+    ```
+4. Create `login.html` to create login form
+    ```
+    {% extends 'base.html' %}
+
+    {% block meta %}
+        <title>Login</title>
+    {% endblock meta %}
+
+    {% block content %}
+
+    <div class = "login">
+
+        <h1>Login</h1>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                </tr>
+                        
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input class="btn login_btn" type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
+
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}     
+            
+        Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+
+    </div>
+
+    {% endblock content %}
+    ```
+
+5. Create a logout button inside `main.html`
+    ```
+    <a href="{% url 'main:logout' %}">
+        <button>
+            Logout
+        </button>
+    </a>
+    ```
+
+6. Import `register`, `login_user`, `logout_user` function in urls.py then add new path
+    ```
+    path('register/', register, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+    ```
+
+7. Add `@login_required(login_url='/login')` before `show_main` function inside `views.py` to restrict access to main page only to authenticated user
+</details>
+
+<details>
+<summary>(4) Display logged-in user information</summary>
+
+1. Import `HttpResponseRedirect`, `reverse`, and `datetime` in `views.py` inside `main` directory
+2. Modify `login_user` code to set cookies each time user logged in
+    ```
+    ...
+    if user is not None:
+        login(request, user)
+        response = HttpResponseRedirect(reverse("main:show_main")) 
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
+    ...
+    ```
+
+3. Add `'last_login': request.COOKIES['last_login'],` in `show_main` function context
+4. Modify `logout_user` function to delete cookie saved as the user logged out
+    ```
+    def logout_user(request):
+        logout(request)
+        response = HttpResponseRedirect(reverse('main:login'))
+        response.delete_cookie('last_login')
+        return response
+    ```
+
+5. Add `<p>Last login session: {{ last_login }}</p>` inside `main.html` to display the last login information
+</details>
+
+<details>
+<summary>(4) Connect Item model with user</summary>
+
+1. Import user inside `models.py` inside `main` directory
+2. Add `user = models.ForeignKey(User, on_delete=models.CASCADE)` inside Item model to connect each item with a user
+3. Modify code inside `add_item` inside `views.py` to allow user modify the object before saving and prevent auto save
+    ```
+    def add_item(request):
+        form = ItemForm(request.POST or None)
+
+        if form.is_valid() and request.method == "POST":
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+    ...
+    ```
+
+4. Modify `show_main` function to display name as user username and to filter item only the user added items
+    ```
+    def show_main(request):
+        items = Item.objects.filter(user=request.user)
+        context = {
+            'name' : request.user.username,
+            ...
+        }
+    ```
+    
+</details>
+
+<details>
+<summary>(4) Make dummy users</summary>
+User 1 punya 5 jenis buku
+<img src="md_images/user1.png" alt="user 1">
+User 2 punya 2 jenis buku
+<img src="md_images/user2.png" alt="user 2">
+</details>
+
+<details>
 <summary>Current Notes</summary>
 <br>
 
@@ -695,3 +908,25 @@ JSON is designed with simple key-value pair structure making it has a more reada
 <summary>JSON by ID</summary>
 <img src="md_images/JSON by id Postman.png" alt="JSON by ID Postman">
 </details>
+
+### What is UserCreationForm in Django? Explain its advantages and disadvantages.
+UserCreationForm is a build-in module of ModelForm used for creating users that can use the application. It receives 3 fields which are username, password, and password confirmation and it automatically generates POST request and create new user when user hit 'Register' button. The advantages of UserCreationForm is it's already provided by Django so the developer doesn't need to build it from the scratch. The form itself has handled some basic aspect such as styling, receiving user data, validating the input and form, and automatically save data to database. The drawback of this module is it doesn't have email field used to send email verification/confirmation and it doesn't provide the view to handle the user creation so developers need to create the function themselves.
+
+### What is the difference between authentication and authorization in Django application? Why are both important?
+<details>
+<summary>Authentication</summary>
+
+Authentication is the process of verifying the user and knowing the identity of the user by processing the username and password input. Authentication is supported by Django by providing models, forms, and views to process user activity(register/login/logout). 
+</details>
+
+<details>
+<summary>Authorization</summary>
+
+Authorization determines specific application, files, data, and actions the authenticated user has access to. It's built on top of authentication system and uses user permission to control access to functionalities.
+</details>
+
+### What are cookies in website? How does Django use cookies to manage user session data?
+Cookies are small blocks of data created by web server sent to user's device. It is usually used to remember information such as user preference, visit, session, behavior, etc. Django uses cookies to manage user session data by generating unique session ID for the user then store it as a cookie in the user's web browser. ID used for user authentication and authorization and will expire when the user closes their web browser.
+
+### Are cookies secure to use? Is there potential risk to be aware of?
+Cookies are generally secure to use but there are potential risk related to data privacy since cookies can store user data such as session hijacking, tracking, cookies theft, CSRF attack, etc. Though cookies pose minimal security risks, it's essential for developer to implement proper security and for user to be aware of privacy concern.
