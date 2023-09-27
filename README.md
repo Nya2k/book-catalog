@@ -757,7 +757,7 @@ Skeleton is needed to make sure our code on displaying data is consistent.
 <summary>(4) Make dummy users</summary>
 User 1 punya 5 jenis buku
 <img src="md_images/user1.png" alt="user 1">
-User 2 punya 2 jenis buku
+User 2 punya 3 jenis buku
 <img src="md_images/user2.png" alt="user 2">
 </details>
 
