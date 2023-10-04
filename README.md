@@ -762,12 +762,12 @@ User 2 punya 3 jenis buku
 </details>
 
 <details>
-<summary>Current Notes</summary>
-<br>
+<summary>(5) Design login, register, add_item</summary>
 
-View and template on tutorial above were made based on the task requirements, I added other contexts and elements afterwards. I also edited the templates and added Tailwind script to do the styling of HTML page. :D
-    
-note : (n) for assigment n
+1. Search and choose page design
+2. Try to apply the design using Tailwind on HTML tags in `login.html`, `register.html`, and `add_item.html` 
+3. `login.html` as a reference design and styling of `register.html` and `add_item.html`
+4. Add borders and table colors for inventory list in `show_html.html`
 </details>
 
 ---
@@ -930,3 +930,55 @@ Cookies are small blocks of data created by web server sent to user's device. It
 
 ### Are cookies secure to use? Is there potential risk to be aware of?
 Cookies are generally secure to use but there are potential risk related to data privacy since cookies can store user data such as session hijacking, tracking, cookies theft, CSRF attack, etc. Though cookies pose minimal security risks, it's essential for developer to implement proper security and for user to be aware of privacy concern.
+
+### Explain the purpose of some CSS element selector and when to use it.
+CSS element selector used to target HTML tags and apply style (CSS) to the target. Element selector usually used to style HTML using internal CSS or external CSS. Some of the examples of CSS element selector are:
+
+<details>
+<summary>CSS element selector examples</summary>
+
+`*` to target all elements and used to apply global styling such like font style.
+
+    ```
+    *{
+        font-family: sans-serif;
+    }
+    ```
+
+`tag` to target all elements using the same HTML tag and used to apply styling on a specific type (ex: style paragraph alignment)
+
+    ```
+    p{
+        text-align: justify;
+    }
+    ```
+
+`.classname` to target class attribute and used to apply styling on the same class (ex: button)
+
+    ```
+    .button{
+        background-color: black;
+    }
+    ```
+
+</details>
+
+
+## Explain some of the HTML5 tags that you know.
+`<header>` : usually used as and introduction of a content
+
+`<nav>` : usually used to as a section of navigation bar
+
+`<details>` : used to make dropdown
+
+`<summary>` : give title to the dropdown of `<details>`
+
+`<video>` : to import a video
+
+### What are the differences between margin and padding?
+Margin is outer spacing of the elements and give spacing between element and other element around it. While padding is the inner spacing of the elements and give spacing between element's border and it's content.
+
+### What are the differences between the CSS framework Tailwind and Bootstrap? When should we use Bootstrap rather than Tailwind, and vice versa?
+Tailwind : Apply styling directly on HTML elements and is highly customizable. Tailwind doesn't come with pre-designed component so developer need to build the component style from the scratch. Tailwind used when developer wants a highly customized design or create unique design that bootstrap doesn't provide.
+
+Bootstrap : Come with pre-designed component so developer can directly used the component without much customization. It still can be customized with limited styling. Bootstrap used when developer doesn't need much customized design and usually to develop faster by using pre-designed components.
