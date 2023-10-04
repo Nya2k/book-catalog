@@ -6,40 +6,42 @@
 
 {% block content %}
 
-<div class = "login">
-
-    <h1>Login</h1>
-
+<div class="bg-neutral-200 min-h-screen flex justify-center text-center">
+  <div class="bg-white shadow-md rounded-xl px-8 pt-6 pb-8 m-auto w-[27rem]">
+    <h1 class="font-semibold font-sans text-2xl mb-5 text-left">LOGIN</h1>
     <form method="POST" action="">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
+      {% csrf_token %}
+      <div class="w-full mx-auto max-w-xs">
+        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="username">
+              Username
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username" name="username" class="form-control">
+          </div>
+          <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="password">
+              Password
+            </label>
+            <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="********" name="password" class="form-control">
+            <p class="text-red-500 text-left text-xs italic">Please choose a password.</p>
+          </div>
+          <div class="">
+            <input class="btn login_btn bg-neutral-600 hover:bg-neutral-700 text-white font-bold py-2 px-4 w-full rounded focus:outline-none focus:shadow-outline" type="submit" value="Login">
+          </div>
+        </form>
+      </div>
     </form>
-
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}     
         
-    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
-
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="text-sm mt-4">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}     
+          
+      <p class="mt-6 text-sm text-neutral-700">Don't have an account yet? <a href="{% url 'main:register' %}" class="underline">Register Now</a></p>
+  </div>
 </div>
-
 {% endblock content %}
