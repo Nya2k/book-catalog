@@ -2,58 +2,146 @@
 
 {% block meta %}
     <style>
-        .baris-bawah{
-			background-color: rgb(179, 179, 179);
+		.card {
+			border: 1px solid #ccc;
+			margin: 10px;
+			padding: 15px;
+			border-radius: 5px;
+			width: 100%;
+            background-color: rgb(205, 202, 202);
+		}
+
+        .last-card{
+			background-color: aqua;
 		}
     </style>
 {% endblock meta %}
 
 {% block content %}
-<h1 class="w-auto text-stone-700 flex m-3 mx-20 text-3xl font-bold">BOOK CATALOG</h1>
+<h1 class="w-auto text-stone-700 flex m-3 ml-20 text-3xl font-bold">BOOK CATALOG</h1>
 
-<table class="mx-20 mt-5 table-auto border-separate border border-neutral-800 bg-neutral-200">
-  <tr class="bg-neutral-500 text-white">
-		<th class="border-separate border border-neutral-800 w-1/4">NAME</th>
-		<th class="border-separate border border-neutral-800 w-1/12">AMOUNT</th>
-		<th class="border-separate border border-neutral-800 w-1/2">DESCRIPTION</th>
-		<th class="w-1/12"></th>
-  </tr>
-  
-  {% for item in items %}
-  <tr  {% if forloop.last %} class="baris-bawah" {% endif %}>
-		<td class="border-separate border border-neutral-800 px-2 py-1">{{item.name}}</td>
-		<td class="border-separate border border-neutral-800 text-center py-1">{{item.amount}}</td>
-		<td class="border-separate border border-neutral-800 px-2 py-1">{{item.description}}</td>
-		<td class="border-separate border border-neutral-800 px-1 py-1 flex items-center justify-center">
-			<a href="{% url 'main:add_amount' item.id item.amount %}" class="mx-1">
-					<button class=" bg-neutral-700 text-white w-7 rounded flex items-center justify-center">
-						+
-					</button>
-			</a>
-			<a href="{% url 'main:subtract_amount' item.id item.amount %}" class="mx-1">
-				<button class=" bg-neutral-700 text-white w-7 rounded flex items-center justify-center">
-				-
-				</button>
-			</a>
-			<a href="{% url 'main:delete_item' item.id %}" class="mx-1">
-				<button class=" bg-neutral-700 text-white w-16 rounded flex items-center justify-center">
-					delete
-				</button>
-			</a>
-		</td>
-  </tr>
-  {% endfor %}
-</table>
+<div id="product_card"></div>
 
-    <a href="{% url 'main:show_main' %}" class="ml-20">
-        <button class=" bg-neutral-700 text-white mt-7 px-3 py-1 rounded">
-        Back to Main
+<div class="flex items-center mt-7">
+    <a href="{% url 'main:show_main' %}" class="ml-20 mr-2">
+        <button class="bg-neutral-700 text-white px-3 py-1 rounded hover:bg-neutral-900">
+            Back to Main
         </button>
     </a>
 
-    <a href="{% url 'main:add_item' %}">
-        <button class="bg-neutral-700 text-white mt-7 px-3 py-1 rounded">
-        Add New Item
-        </button>
-    </a>
+    <button type="button" class="btn bg-neutral-700 text-white px-3 py-1 rounded hover:bg-neutral-900" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Item</button>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-neutral-700 text-white px-3 py-1 rounded hover:bg-neutral-900" data-bs-dismiss="modal" onclick="clearForm()">Close</button>
+                <button type="button" class="btn bg-neutral-700 text-white px-3 py-1 rounded hover:bg-neutral-900" id="button_add" data-bs-dismiss="modal">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function getProducts() {
+        return fetch("{% url 'main:show_json_by_user' %}").then((res) => res.json())
+    }
+
+    async function refreshItems() {
+        document.getElementById("product_card").innerHTML = ""
+        const items = await getProducts()
+        let htmlString = `
+        <div class="mx-[70px] mt-5 flex flex-wrap">`;
+
+        items.forEach((item, index) => {
+            const isLastItem = index === items.length - 1;
+            htmlString += `\n
+                <div class="w-1/5 h-full flex justify-center">
+                    <div class="card ${isLastItem ? 'bg-last-card' : 'bg-neutral-300'}">
+                        <h2 class="font-semibold mb-1">${item.fields.name}</h2>
+                        <p>Amount: ${item.fields.amount}</p>
+                        <p>${item.fields.description}</p>
+                        <div class="px-1 py-1 flex items-center justify-end align-bottom rounded-sm mt-3">
+                            <button class="bg-neutral-700 text-white w-7 rounded flex items-center justify-center mx-1" onclick="addButton(${item.pk})">+</button>
+                            <button class="bg-neutral-700 text-white w-7 rounded flex items-center justify-center mx-1" onclick="subtractButton(${item.pk})">-</button>
+                            <button class="bg-neutral-700 text-white w-7 rounded flex items-center justify-center mx-1" onclick="deleteButton(${item.pk})">~</button>
+                        </div>
+                    </div>
+                </div>`
+        })
+        htmlString += `</div>`;
+        document.getElementById("product_card").innerHTML = htmlString
+    }
+
+    function addButton(id) {
+      const formData = new FormData()
+      formData.append("id", id)
+      fetch("/main/add-amount-ajax/", {
+        method: "POST",
+        body: formData
+      }).then(refreshItems)
+      return false
+    }
+
+    function subtractButton(id) {
+      const formData = new FormData()
+      formData.append("id", id)
+      fetch("/main/subtract-amount-ajax/", {
+        method: "POST",
+        body: formData
+      }).then(refreshItems)
+      return false
+    }
+
+    function deleteButton(id) {
+      const formData = new FormData()
+      formData.append("id", id)
+      fetch("/main/delete-item-ajax/", {
+        method: "POST",
+        body: formData
+      }).then(refreshItems)
+      return false
+    }
+
+    refreshItems()
+
+    function addProduct() {
+        fetch("{% url 'main:create-ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshItems)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    function clearForm(){
+
+    }
+
+    document.getElementById("button_add").onclick = addProduct
+</script>
+
 {% endblock %}

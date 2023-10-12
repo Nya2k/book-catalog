@@ -7,23 +7,25 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="bg-neutral-200 min-h-screen flex-col justify-center text-center">
-    <h1 class="font-semibold font-sans text-2xl p-4">ADD NEW ITEM</h1>
-    <div class="flex justify-center text-center">
-        <form method="POST" >
-            <div class="bor">
-                {% csrf_token %}
-                <table>
-                    {{ form.as_table }}
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="submit" value="Add Item"/>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </form>
+<div class="bg-neutral-200 min-h-screen flex justify-center text-center">
+    <div class="m-auto w-[27rem]">
+        <h1 class="font-semibold font-sans text-2xl p-4">ADD NEW ITEM</h1>
+        <div class="flex justify-center text-center">
+            <form method="POST" >
+                <div class="bor">
+                    {% csrf_token %}
+                    <table class="text-left w-full">
+                        {{ form.as_table }}
+                        <tr>
+                            <td></td>
+                            <td class="text-end">
+                                <input type="submit" value="Add Item" class="bg-neutral-700 text-white px-3 py-1 rounded hover:bg-neutral-900"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
