@@ -769,6 +769,18 @@ User 2 punya 3 jenis buku
 3. `login.html` as a reference design and styling of `register.html` and `add_item.html`
 4. Add borders and table colors for inventory list in `show_html.html`
 </details>
+    
+<details>
+<summary>Step by step tugas 6</summary>
+    
+1. Buat fungsi AJAX addProduct kemudian buat routing `create-ajax`
+2. Buat fungsi `show_json_by_user` untuk mengambil item yang dimiliki oleh user dalam bentuk json kemudian buat routingnya
+3. Buat fungsi fetch API data JSON 
+4. Buat fungsi `refreshItems` dan pindahkan code card ke dalam htmlString
+5. Untuk button add by AJAX, masukkan code modal kemudian buat fungsi `addProduct` pada script
+6. Di luar tugas, buat fungsi pada `views.py` untuk handle add dan subtract kemudian buat URL routingnya. Buat button untuk add dan subtract, kemudian buat fungsi pada script yang melakukan fetch pada URL routing yang baru dibuat.
+7. Selain itu, untuk bonus, buat seperti step ke 6 namun fungsi pada `views.py` menghandle delete dengan AJAX
+</details>
 
 ---
 
@@ -982,3 +994,18 @@ Margin is outer spacing of the elements and give spacing between element and oth
 Tailwind : Apply styling directly on HTML elements and is highly customizable. Tailwind doesn't come with pre-designed component so developer need to build the component style from the scratch. Tailwind used when developer wants a highly customized design or create unique design that bootstrap doesn't provide.
 
 Bootstrap : Come with pre-designed component so developer can directly used the component without much customization. It still can be customized with limited styling. Bootstrap used when developer doesn't need much customized design and usually to develop faster by using pre-designed components.
+
+### Explain the difference between asynchronous programming and synchronous programming.
+Asynchronous programming allows programs to run di parallel and will send multiple request to the server. The program doesn't need to wait running program to finish before executing other. Synchronous programming allows only 1 program run at a time. Synchronous method will complete 1 program before executing another.
+    
+### In the implementation of JavaScript and AJAX, there is an implemented paradigm called the event-driven programming paradigm. Explain what this paradigm means and give one example of its implementation in this assignment.
+Event-driven programming paradigm is a programming where the flow of the program is determined by user interactions, data changes, etc. In this assignment, the example of event-driven programming is user interaction by events, such as clearing form when the close button is clicked (using onclick) or `addProduct` function when the `button_add` is clicked.
+    
+### Explain the implementation of asynchronous programming in AJAX.
+AJAX is usually used to process data request or handling response. AJAX request object such as fetch is created to make an HTTP request to a web server. Event listener of user action or event will trigger the AJAX request then process it. One example of asynchronous method in AJAX is `async` to handle asynchronous HTTP request in the element. It is used to send a request without waiting response unlike `await` property that needs to wait the response.
+    
+### In this semester, the implementation of AJAX is done using the Fetch API rather than the jQuery library. Compare the two technologies and write down your opinion which technology is better to use.
+- Fetch API : fetch is an interface for making an AJAX request and it's easier to work with asynchronous program. Fetch can be used for various of data types such as JSON, text, etc.
+- jQuery library : jQuery is a JavaScript library and used to handle event, animate, etc. jQuery provides a simple API for making AJAX such as providing method that actually needs many lines of JavaScript code.
+
+In my opinion, fetch API is more likely used in modern web development due it's native browser support. Fetch API also supports different data types so the request can be processed more precisely.
