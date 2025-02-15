@@ -1,4 +1,6 @@
 # **BOOK CATALOG**
+This project is an assignment for the Platform Based Programming course at the University of Indonesia, focusing on web application development using Django.
+
 https://book-catalog.adaptable.app
 
 ---
